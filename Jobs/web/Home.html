@@ -11,7 +11,7 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="Assets/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="Assets/bootstrap/css/bootstrap-social.css">
-        <link rel="stylesheet" href="Assets/font-awesome/css/font-awesome.css">
+        <link rel="stylesheet" href="Assets/font-awesome/css/font-awesome.css"> 
         <style>
             body {
                 font-family: "source-serif-pro",Times,serif;
@@ -36,8 +36,8 @@ and open the template in the editor.
             }
             .subPanels h3{
                 text-align: center;
-                padding-top: 20px;
-/*                font-family: cursive;*/
+                /*                padding-top: 20px;*/
+                /*                font-family: cursive;*/
             }
             .social-box{
                 margin: 70px auto auto;
@@ -51,21 +51,39 @@ and open the template in the editor.
             }
             .section-card-border{
 
-                border: 1px solid red;
+                border: 1px solid #e5e5e5;
                 border-radius: 4px;
                 margin-bottom: 15px;
             }
 
+            .section-card-border:hover{
+                background-color: #e5e5e5;
+                border-color: #bababa;
+            }
             .footer {
-                position: absolute;
+                position: relative;
                 bottom: 0;
                 width: 100%;
-                background: #0F7DC2;
+                background: #129894;
                 border-radius: 0px;
                 height: 60px;
-                color: #fff;
+                color: #a0d6d4;
+                padding-top: 15px;
             }
-
+            .footer p{
+                float: left;
+                margin-bottom: 15px;
+            }
+            .footer p.last{
+                float: right;
+            }
+            .homeSearch .dropdown-toggle{
+                border-radius: 0px;
+                margin-left: -1px;
+            }
+            .no-padding {
+                padding: 0px;
+            }
         </style>
     </head>
     <body>
@@ -110,13 +128,13 @@ and open the template in the editor.
             <div class="row">
                 <!--<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">-->
 
-                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                        <div class="pageHeader text-center">
-                            <h2>Find tailored jobs right for you</h2>
-                        </div>
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <div class="pageHeader text-center">
+                        <h2>Find tailored jobs right for you</h2>
                     </div>
-                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                        <div class="row">
+                </div>
+                <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="subPanels">
                                 <form class="form-horizontal">
@@ -150,12 +168,12 @@ and open the template in the editor.
 
                                         <!-- Text input-->
                                         <!-- div class="form-group">
-                                            <!--<label class="col-md-4 control-label" for="textinput">Text Input</label>-- >  
-                                            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                                                <input id="job2" name="textinput" type="text" placeholder="Job Preference" class="form-control input-md">
-                                                <!--<span class="help-block">help</span>-- >  
-                                            </div>
-                                        </div> -->
+                                        <!--<label class="col-md-4 control-label" for="textinput">Text Input</label>-- >  
+                                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                                            <input id="job2" name="textinput" type="text" placeholder="Job Preference" class="form-control input-md">
+                                        <!--<span class="help-block">help</span>-- >  
+                                    </div>
+                                </div> -->
 
                                         <!-- Button -->
                                         <div class="form-group">
@@ -181,7 +199,7 @@ and open the template in the editor.
                             </div>
 
                         </div>
-                            
+
                         <div class="col-lg-1 col-md-1 hidden-sm hidden-xs">
                             <div class="verticalLine">
                             </div>
@@ -225,24 +243,51 @@ and open the template in the editor.
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                        <div class="searchSection">
-                            search dropdown goes here
+                        <div class="searchSection text-center">
+                            <!--search dropdown goes here-->
+                            <div class="form-inline">
+                                <div class="form-group homeSearch">
+                                    <label class="sr-only" for="location">Jobs</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Job type">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Location <span class="caret"></span></button>
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="#">City 1</a></li>
+                                                <li><a href="#">City 2</a></li>
+                                                <li><a href="#">City 3</a></li>
+                                            </ul>
+                                        </div>
+                                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+
+                                    </div><!-- /input-group -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 subPanels">
                         <div class="col-sm-4">
                             <div class="row">
-                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border"><h3>Robust</h3><p>There is other content and snippets of details or features that can be placed here..</p><i class="fa fa-cog fa-5x"></i></div>
+                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border">
+                                    <h3>Job 1</h3>
+                                    <p>Description of job goes here, full description of the job.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="row">
-                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border"><h3>Robust</h3><p>There is other content and snippets of details or features that can be placed here..</p><i class="fa fa-cog fa-5x"></i></div>
+                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border">
+                                    <h3>Job 2</h3>
+                                    <p>Description of job goes here, full description of the job.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="row">
-                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border"><h3>Robust</h3><p>There is other content and snippets of details or features that can be placed here..</p><i class="fa fa-cog fa-5x"></i></div>
+                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border">
+                                    <h3>Job 3</h3>
+                                    <p>Description of job goes here, full description of the job.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -250,17 +295,26 @@ and open the template in the editor.
                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                         <div class="col-sm-4">
                             <div class="row">
-                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border"><h3>Robust</h3><p>There is other content and snippets of details or features that can be placed here..</p><i class="fa fa-cog fa-5x"></i></div>
+                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border">
+                                    <h3>Job 4</h3>
+                                    <p>Description of job goes here, full description of the job.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="row">
-                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border"><h3>Robust</h3><p>There is other content and snippets of details or features that can be placed here..</p><i class="fa fa-cog fa-5x"></i></div>
+                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border">
+                                    <h3>Job 5</h3>
+                                    <p>Description of job goes here, full description of the job.</p>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="row">
-                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border"><h3>Robust</h3><p>There is other content and snippets of details or features that can be placed here..</p><i class="fa fa-cog fa-5x"></i></div>
+                                <div class="col-sm-10 col-sm-offset-2 text-center section-card-border">
+                                    <h3>Job 6</h3>
+                                    <p>Description of job goes here, full description of the job.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -269,11 +323,16 @@ and open the template in the editor.
                 </div>
             </div>
         </div>
-<!--        <footer class="footer">
+        <footer class="footer">
             <div class="container">
-                <p class="text-muted">Place sticky footer content here.</p>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p>&#169; 2015, All copyrights reserved.</p>
+                        <p class="last">JobSearchPortal.com</p>
+                    </div>
+                </div>
             </div>
-        </footer>-->
+        </footer>
         <script src="Assets/JS/jquery-2.1.1.min.js"></script>
         <script src="Assets/bootstrap/js/bootstrap.js"></script>
     </body>
