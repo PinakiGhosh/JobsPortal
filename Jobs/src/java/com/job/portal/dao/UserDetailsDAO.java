@@ -9,6 +9,8 @@ import com.job.portal.beans.UserDetails;
 import com.job.portal.utils.AbstractDAO;
 import com.job.portal.utils.HashingUtils;
 import com.job.portal.utils.LogOut;
+import java.util.List;
+import org.hibernate.Query;
 
 /**
  *
@@ -21,36 +23,36 @@ public class UserDetailsDAO extends AbstractDAO<UserDetails> {
         return u;
     }
 
-    public boolean checkCredentials(String email, String pwd) {
-        boolean flag = false;
-        String actPwd = null;
+    public UserDetails checkCredentials(String email, String pwd) {
+        UserDetails ud = null;
         try {
             String salt = getSalt(email);
             byte hashArr[] = HashingUtils.getHash(pwd, HashingUtils.base64ToByte(salt));
             String hash = HashingUtils.byteToBase64(hashArr);
-//            Document doc = mc.find(eq("_id", email)).first();
-//            if (doc != null) {
-//                actPwd = doc.getString("pwd");
-//                flag = actPwd.equalsIgnoreCase(hash);
-//            }
+            String hql = "from user_details where user_details.email= :email and user_details.pwdHash= :pwd";
+            Query query = session.createQuery(hql);
+            query.setParameter("email", email);
+            query.setParameter("pwd", hash);
+            ud = (UserDetails) query.uniqueResult();
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         }
-        return flag;
+        return ud;
     }
 
     public boolean checkEmailExists(String email) {
         boolean flag = false;
+        List l = null;
         try {
-//            Map<String, Object> m = new HashMap<String, Object>();
-//            m.put("email", email);
-//            JSONArray obj = getObjectList(m);
-//            System.out.println(obj);
-//            if (obj.length() == 1) {
-//                flag = true;
-//            }
+            String hql = "from user_details where user_details.email= :email";
+            Query query = session.createQuery(hql);
+            query.setParameter("phone", email);
+            l = query.list();
+            if (l.size() > 0) {
+                flag = true;
+            }
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
@@ -61,11 +63,15 @@ public class UserDetailsDAO extends AbstractDAO<UserDetails> {
 
     public boolean checkPhoneExists(String phone) {
         boolean flag = false;
+        List l = null;
         try {
-//            Document doc = mc.find(eq("phone", phone)).first();
-//            if (doc != null) {
-//                flag = true;
-//            }
+            String hql = "from user_details where user_details.phone= :phone";
+            Query query = session.createQuery(hql);
+            query.setParameter("phone", phone);
+            l = query.list();
+            if (l.size() > 0) {
+                flag = true;
+            }
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
@@ -76,16 +82,22 @@ public class UserDetailsDAO extends AbstractDAO<UserDetails> {
 
     public String getSalt(String email) {
         String salt = null;
+        UserDetails ud = null;
         try {
-//            Document doc = mc.find(eq("_id", email)).first();
-//            if (doc != null) {
-//                salt = doc.getString("salt");
-//            }
+            String hql = "from user_details where user_details.email= :email";
+            Query query = session.createQuery(hql);
+            query.setParameter("email", email);
+            ud = (UserDetails) query.uniqueResult();
+            salt = ud.getSalt();
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         }
         return salt;
+    }
+
+    public static void main(String[] args) {
+
     }
 }

@@ -12,7 +12,6 @@ import com.job.portal.utils.ExpressionCheck;
 import com.job.portal.utils.LogOut;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,10 +34,10 @@ public class LoginRegisterServlet extends HttpServlet {
         boolean flag = false;
         UserDetails upb = new UserDetails();
         try {
-            Map<String, String[]> m = request.getParameterMap();
-            for (Map.Entry<String, String[]> e : m.entrySet()) {
-                System.out.println(e.getKey() + "\t" + e.getValue()[0]);
-            }
+//            Map<String, String[]> m = request.getParameterMap();
+//            for (Map.Entry<String, String[]> e : m.entrySet()) {
+//                System.out.println(e.getKey() + "\t" + e.getValue()[0]);
+//            }
             if (request.getParameter("param") != null) {
                 obj = new JSONObject();
                 obj.put("status", false);
@@ -110,10 +109,12 @@ public class LoginRegisterServlet extends HttpServlet {
                         obj.put("msg", "Already registered with this email");
                     }
                 } else if (param.equalsIgnoreCase("login")) {
-                    flag = new UserDetailsDAO().checkCredentials(email, pwd);
-                    obj.put("status", flag);
+                    UserDetails ud = new UserDetailsDAO().checkCredentials(email, pwd);
+                    obj.put("status", ud == null ? false : true);
                     if (flag) {
                         obj.put("msg", "Login Successful");
+                        HttpSession sess = request.getSession(true);
+                        sess.setAttribute("user", ud);
                     } else {
                         obj.put("msg", "Username and password donot match");
                     }

@@ -14,8 +14,8 @@ import org.hibernate.Transaction;
  */
 public abstract class AbstractDAO<T> {
 
-    Session session;
-    Transaction trans;
+    public Session session;
+    public Transaction trans;
 
     public AbstractDAO() {
         session = new ConnectionUtils().getSession();
