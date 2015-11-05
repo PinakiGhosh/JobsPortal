@@ -36,7 +36,7 @@ public class CompanyServlet extends HttpServlet {
             if (request.getParameter("param") != null) {
                 param = request.getParameter("param");
                 if (param.equalsIgnoreCase("addCompany")) {
-                    cm.addCompany();
+                    cm.addCompany(m);
                 }
             }
         } catch (Exception e) {

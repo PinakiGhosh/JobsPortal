@@ -5,14 +5,29 @@
  */
 package com.job.portal.manager;
 
+import com.job.portal.beans.CompanyMaster;
+import com.job.portal.utils.LogOut;
+import java.util.Map;
+
 /**
  *
  * @author pinaki ghosh
  */
 public class CompanyManager {
 
-    public void addCompany() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addCompany(Map<String, String[]> m) {
+        try {
+            CompanyMaster cm = new CompanyMaster();
+            String key, value;
+            for (Map.Entry<String, String[]> e : m.entrySet()) {
+                key = e.getKey();
+                value = e.getValue()[0];
+            }
+        } catch (Exception e) {
+            LogOut.log.error("In " + new Object() {
+            }.getClass().getEnclosingClass().getName() + "." + new Object() {
+            }.getClass().getEnclosingMethod().getName() + " " + e);
+        }
     }
 
 }
