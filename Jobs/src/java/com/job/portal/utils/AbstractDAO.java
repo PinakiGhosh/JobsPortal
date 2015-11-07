@@ -21,11 +21,15 @@ public abstract class AbstractDAO<T> {
         session = new ConnectionUtils().getSession();
     }
 
-    public T insert(T obj) {
+    public Object insert(T obj) {
         trans = session.beginTransaction();
-        T ret = (T) session.save(obj);
+        Object ret = (T) session.save(obj);
         trans.commit();
-        session.close();
+        if (session.isOpen()) {
+            session.close();
+        }
         return ret;
     }
+
+    public abstract T getObjectById(long id);
 }

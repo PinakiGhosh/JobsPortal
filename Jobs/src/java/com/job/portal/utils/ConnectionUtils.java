@@ -26,10 +26,7 @@ public class ConnectionUtils {
         if (sessionFactory == null) {
             initSessionFactory();
         }
-        session = sessionFactory.getCurrentSession();
-        if (session == null) {
-            session = sessionFactory.openSession();
-        }
+        session = sessionFactory.openSession();
         return session;
     }
 

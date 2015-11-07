@@ -98,7 +98,7 @@ public class UserDetails implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "phone", length = 10)
+    @Column(name = "phone", length = 12)
     public String getPhone() {
         return this.phone;
     }

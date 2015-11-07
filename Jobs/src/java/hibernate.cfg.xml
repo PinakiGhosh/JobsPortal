@@ -7,13 +7,14 @@
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
     <property name="connection.pool_size">1</property>
-    <property name="show_sql">true</property>
-    <property name="hbm2ddl.auto">update</property>
+    <property name="show_sql">false</property>
+    <property name="hbm2ddl.auto">create</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.current_session_context_class">thread</property>
     <mapping class="com.job.portal.beans.Qualifications"/>
-    <mapping class="com.job.portal.beans.Userdetails"/>
-    <mapping class="com.job.portal.beans.Jobmaster"/>
-    <mapping class="com.job.portal.beans.Companymaster"/>
-    <mapping class="com.job.portal.beans.Jobapplications"/>
+    <mapping class="com.job.portal.beans.UserDetails"/>
+    <mapping class="com.job.portal.beans.JobMaster"/>
+    <mapping class="com.job.portal.beans.CompanyMaster"/>
+    <mapping class="com.job.portal.beans.JobApplications"/>
   </session-factory>
 </hibernate-configuration>

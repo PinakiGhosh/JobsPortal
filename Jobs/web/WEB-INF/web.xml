@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
+        <servlet-name>LoginRegisterServlet</servlet-name>
         <servlet-class>com.job.portal.servlets.LoginRegisterServlet</servlet-class>
     </servlet>
     <servlet>
@@ -17,8 +17,8 @@
         <servlet-class>com.job.portal.servlets.CompanyServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/LoginServlet</url-pattern>
+        <servlet-name>LoginRegisterServlet</servlet-name>
+        <url-pattern>/LoginRegisterServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
@@ -34,7 +34,10 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            -1
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>web/myJsps/index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

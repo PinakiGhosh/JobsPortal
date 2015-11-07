@@ -104,19 +104,19 @@ public class LoginRegisterServlet extends HttpServlet {
                             } else {
                                 obj.put("msg", "Password and confirm password do not match");
                             }
+                        } else {
+                            obj.put("msg", "Already registered with this email");
                         }
-                    } else {
-                        obj.put("msg", "Already registered with this email");
-                    }
-                } else if (param.equalsIgnoreCase("login")) {
-                    UserDetails ud = new UserDetailsDAO().checkCredentials(email, pwd);
-                    obj.put("status", ud == null ? false : true);
-                    if (flag) {
-                        obj.put("msg", "Login Successful");
-                        HttpSession sess = request.getSession(true);
-                        sess.setAttribute("user", ud);
-                    } else {
-                        obj.put("msg", "Username and password donot match");
+                    } else if (param.equalsIgnoreCase("login")) {
+                        UserDetails ud = new UserDetailsDAO().checkCredentials(email, pwd);
+                        obj.put("status", ud == null ? false : true);
+                        if (obj.getBoolean("status")) {
+                            obj.put("msg", "Login Successful");
+                            HttpSession sess = request.getSession(true);
+                            sess.setAttribute("user", ud);
+                        } else {
+                            obj.put("msg", "Email and password donot match");
+                        }
                     }
                 }
             }
