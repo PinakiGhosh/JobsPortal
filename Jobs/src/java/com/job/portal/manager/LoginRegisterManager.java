@@ -27,7 +27,8 @@ public class LoginRegisterManager {
             upb.setPwdHash(HashingUtils.byteToBase64(pwdArray));
             upb.setJoined(new Date());
             long uId = udd.insertUser(upb);
-            ud = udd.getObjectById(uId);
+            System.out.println("UserId is " + uId);
+            //ud = udd.getObjectById(uId);
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {

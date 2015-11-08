@@ -5,7 +5,7 @@
  */
 package com.job.portal.servlets;
 
-import com.job.portal.manager.JobsManager;
+import com.job.portal.manager.JobApplicationsManager;
 import com.job.portal.utils.LogOut;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +20,7 @@ import org.json.JSONObject;
  *
  * @author pinaki ghosh
  */
-public class JobsServlet extends HttpServlet {
+public class JobApplicationsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -28,28 +28,15 @@ public class JobsServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         JSONObject obj = null;
         JSONArray arr = null;
+        JobApplicationsManager jam = new JobApplicationsManager();
         try {
             String param = request.getParameter("param");
-            JobsManager jm = new JobsManager();
             if (param != null) {
-                if (param.equalsIgnoreCase("addJob")) {
-                    boolean flag = jm.addJob(request);
-                    obj = new JSONObject();
-                    obj.put("status", flag);
-                    if (flag) {
-                        obj.put("msg", "Job created successfully");
-                    } else {
-                        obj.put("msg", "Please try again after sometime");
-                    }
+                if (param.equalsIgnoreCase("apply")) {
+                    obj = jam.apply(request);
                     out.print(obj);
-                } else if (param.equalsIgnoreCase("getJobDetails")) {
-                    obj = jm.getJobDetails(request);
-                    out.print(obj);
-                } else if (param.equalsIgnoreCase("getJobApplicants")) {
-                    arr = jm.getJobApplicants(request);
-                    out.print(arr);
-                } else if (param.equalsIgnoreCase("showAll")) {
-                    arr = jm.getAllJobs(request);
+                } else if (param.equalsIgnoreCase("showApplied")) {
+                    arr = jam.getAppliedJobs(request);
                     out.print(arr);
                 }
             }

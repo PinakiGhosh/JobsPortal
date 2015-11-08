@@ -6,7 +6,6 @@
 package com.job.portal.servlets;
 
 import com.job.portal.beans.UserDetails;
-import com.job.portal.manager.JobApplicationsManager;
 import com.job.portal.utils.LogOut;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,7 +37,6 @@ public class ProfileServlet extends HttpServlet {
                 if (param.equalsIgnoreCase("getProfile")) {
 
                 } else if (param.equalsIgnoreCase("getPostedJobs")) {
-                    out.print(new JobApplicationsManager().getJobsPosted(ud));
                 }
             }
         } catch (Exception e) {

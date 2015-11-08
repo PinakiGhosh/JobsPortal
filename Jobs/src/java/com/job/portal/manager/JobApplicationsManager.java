@@ -5,11 +5,11 @@
  */
 package com.job.portal.manager;
 
-import com.job.portal.beans.JobApplications;
-import com.job.portal.beans.UserDetails;
-import com.job.portal.utils.BeanUtils;
+import com.job.portal.dao.JobApplicationsDAO;
+import com.job.portal.utils.ExpressionCheck;
 import com.job.portal.utils.LogOut;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,14 +19,50 @@ import org.json.JSONObject;
  */
 public class JobApplicationsManager {
 
-    public JSONArray getJobsPosted(UserDetails ud) {
+    public JSONObject apply(HttpServletRequest request) {
+        JSONObject obj = new JSONObject(), obj1 = null;
+        boolean flag = false;
+        JobApplicationsDAO jad = new JobApplicationsDAO();
+        try {
+            obj.put("status", flag);
+            HttpSession sess = request.getSession(false);
+            obj1 = (JSONObject) sess.getAttribute("user");
+            String jobId = request.getParameter("jobId");
+            if (jobId != null && ExpressionCheck.checkNumber(jobId)) {
+                if (obj1.has("userId")) {
+                    flag = jad.applyForJob(jobId, obj1.getString("userId"));
+                    obj.put("status", flag);
+                    if (flag) {
+                        obj.put("msg", "Successfully Applied");
+                    } else {
+                        obj.put("msg", "There seems to be some problem please try again after sometime");
+                    }
+                } else {
+                    obj.put("msg", "Please log in to continue");
+                }
+            } else {
+                obj.put("msg", "Invalid job id");
+            }
+        } catch (Exception e) {
+            LogOut.log.error("In " + new Object() {
+            }.getClass().getEnclosingClass().getName() + "." + new Object() {
+            }.getClass().getEnclosingMethod().getName() + " " + e);
+        } finally {
+            return obj;
+        }
+    }
+
+    public JSONArray getAppliedJobs(HttpServletRequest request) {
         JSONArray arr = new JSONArray();
         JSONObject obj = null;
+        JobApplicationsDAO jad = new JobApplicationsDAO();
         try {
-            Set<JobApplications> ja = ud.getJobapplicationses();
-            for (JobApplications j : ja) {
-                obj = BeanUtils.convertToJSON(j);
-                arr.put(obj);
+            HttpSession sess = request.getSession(false);
+            obj = (JSONObject) sess.getAttribute("user");
+            if (obj.has("userId")) {
+                arr = jad.getAppliedJobs(obj.getString("userId"));
+            } else {
+                obj.put("msg", "Please log in to continue");
             }
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {

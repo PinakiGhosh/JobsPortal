@@ -1,0 +1,3 @@
+Register - Get userId and save userJson in session
+Fix insert function in AbstractDAO to return generated Id
+AddJob write manager code

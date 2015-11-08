@@ -1,0 +1,10 @@
+boolean flag = false;
+        try {
+
+        } catch (Exception e) {
+            LogOut.log.error("In " + new Object() {
+            }.getClass().getEnclosingClass().getName() + "." + new Object() {
+            }.getClass().getEnclosingMethod().getName() + " " + e);
+        } finally {
+            return flag;
+        }

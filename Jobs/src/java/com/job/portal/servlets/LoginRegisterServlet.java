@@ -29,7 +29,7 @@ public class LoginRegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        JSONObject obj = null;
+        JSONObject obj = null, user = null;
         String email = null, pwd = null;
         boolean flag = false;
         UserDetails upb = new UserDetails();
@@ -86,7 +86,6 @@ public class LoginRegisterServlet extends HttpServlet {
                                                         } else {
                                                             obj.put("msg", "Ooops!! Try again later");
                                                         }
-
                                                     }
                                                 } else {
                                                     obj.put("msg", "Already registered with this number");
@@ -108,12 +107,13 @@ public class LoginRegisterServlet extends HttpServlet {
                             obj.put("msg", "Already registered with this email");
                         }
                     } else if (param.equalsIgnoreCase("login")) {
-                        UserDetails ud = new UserDetailsDAO().checkCredentials(email, pwd);
-                        obj.put("status", ud == null ? false : true);
+                        user = new UserDetailsDAO().checkCredentials(email, pwd);
+                        obj = new JSONObject();
+                        obj.put("status", user == null ? false : true);
                         if (obj.getBoolean("status")) {
                             obj.put("msg", "Login Successful");
                             HttpSession sess = request.getSession(true);
-                            sess.setAttribute("user", ud);
+                            sess.setAttribute("user", user);
                         } else {
                             obj.put("msg", "Email and password donot match");
                         }

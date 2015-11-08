@@ -7,86 +7,91 @@ package com.job.portal.dao;
 
 import com.job.portal.beans.UserDetails;
 import com.job.portal.utils.AbstractDAO;
-import com.job.portal.utils.ConnectionUtils;
+import com.job.portal.utils.DbConnection;
 import com.job.portal.utils.HashingUtils;
 import com.job.portal.utils.LogOut;
-import java.util.List;
-import org.hibernate.Query;
+import org.json.JSONObject;
 
 /**
  *
  * @author pinaki ghosh
  */
-public class UserDetailsDAO extends AbstractDAO<UserDetails> {
+public class UserDetailsDAO extends AbstractDAO {
 
-    public Long insertUser(UserDetails ud) {
-        long u = (Long) insert(ud);
-        return u;
-    }
-
-    @Override
-    public UserDetails getObjectById(long id) {
-        UserDetails ud = null;
+    public long insertUser(UserDetails ud) {
+        long id = -1;
         try {
-            session = new ConnectionUtils().getSession();
-            ud = (UserDetails) session.get(UserDetails.class, id);
+            String query = "insert into user_details (email,name,pwdHash,salt,joined,phone) values(?,?,?,?,?,?)";
+            Object arr[] = new Object[6];
+            arr[0] = ud.getEmail();
+            arr[1] = ud.getName();
+            arr[2] = ud.getPwdHash();
+            arr[3] = ud.getSalt();
+            arr[4] = ud.getJoined();
+            arr[5] = ud.getPhone();
+            id = insert(query, arr);
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
+            return id;
+        }
+    }
+
+    public JSONObject getUserById(long id) {
+        JSONObject ud = null;
+        try {
+            String query = "select userId,dob,email,gender,joined,name,"
+                    + "phone,pwdHash,role,salt "
+                    + "from user_details where userId=?";
+            Object arr[] = new Object[1];
+            arr[0] = id;
+            ud = fetchOne(query, arr);
+        } catch (Exception e) {
+            LogOut.log.error("In " + new Object() {
+            }.getClass().getEnclosingClass().getName() + "." + new Object() {
+            }.getClass().getEnclosingMethod().getName() + " " + e);
+        } finally {
             return ud;
         }
     }
 
-    public UserDetails checkCredentials(String email, String pwd) {
-        UserDetails ud = null;
+    public JSONObject checkCredentials(String email, String pwd) {
+        JSONObject obj = null;
+        System.out.println(email + "\t" + pwd);
         try {
             String salt = getSalt(email);
             byte hashArr[] = HashingUtils.getHash(pwd, HashingUtils.base64ToByte(salt));
             String hash = HashingUtils.byteToBase64(hashArr);
-            session = new ConnectionUtils().getSession();
-            String hql = "from UserDetails U where U.email= :email and U.pwdHash= :pwd";
-            Query query = session.createQuery(hql);
-            query.setParameter("email", email);
-            query.setParameter("pwd", hash);
-            System.out.println("Hash is " + hash + "\t" + hash.equalsIgnoreCase("Xy3a2HcVqDg="));
-            ud = (UserDetails) query.uniqueResult();
+            String query = "select userId,dob,email,gender,joined,name,"
+                    + " phone,pwdHash,role,salt"
+                    + " from user_details where email=? and pwdHash=?";
+            Object arr[] = new Object[2];
+            arr[0] = email;
+            arr[1] = hash;
+            obj = fetchOne(query, arr);
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
-            return ud;
+            return obj;
         }
     }
 
     public boolean checkEmailExists(String email) {
         boolean flag = false;
-        List l = null;
         try {
-            String hql = "from UserDetails U where U.email= :email";
-            session = new ConnectionUtils().getSession();
-            Query query = session.createQuery(hql);
-            query.setParameter("email", email);
-            l = query.list();
-            if (l.size() > 0) {
-                flag = true;
-            }
+            String query = "select email from user_details where email=?";
+            Object arr[] = {email};
+            JSONObject obj = fetchOne(query, arr);
+            flag = obj == null ? false : true;
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
             return flag;
         }
 
@@ -94,46 +99,34 @@ public class UserDetailsDAO extends AbstractDAO<UserDetails> {
 
     public boolean checkPhoneExists(String phone) {
         boolean flag = false;
-        List l = null;
         try {
-            session = new ConnectionUtils().getSession();
-            String hql = "from UserDetails U where U.phone= :phone";
-            Query query = session.createQuery(hql);
-            query.setParameter("phone", phone);
-            l = query.list();
-            if (l.size() > 0) {
-                flag = true;
-            }
+            String query = "select email from user_details where phone=?";
+            Object arr[] = {phone};
+            JSONObject obj = fetchOne(query, arr);
+            flag = obj == null ? false : true;
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
             return flag;
         }
     }
 
     public String getSalt(String email) {
         String salt = null;
-        UserDetails ud = null;
         try {
-            String hql = "from UserDetails U where U.email= :email";
-            session = new ConnectionUtils().getSession();
-            Query query = session.createQuery(hql);
-            query.setParameter("email", email);
-            ud = (UserDetails) query.uniqueResult();
-            salt = ud.getSalt();
+            String sql = "select salt from user_details where email=?";
+            Object arr[] = {email};
+            JSONObject obj = fetchOne(sql, arr);
+            if (obj.has("salt")) {
+                salt = obj.getString("salt");
+            }
         } catch (Exception e) {
             LogOut.log.error("In " + new Object() {
             }.getClass().getEnclosingClass().getName() + "." + new Object() {
             }.getClass().getEnclosingMethod().getName() + " " + e);
         } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
             return salt;
         }
     }
@@ -144,7 +137,6 @@ public class UserDetailsDAO extends AbstractDAO<UserDetails> {
         System.out.println(udd.getSalt(email));
         System.out.println(udd.checkEmailExists(email));
         System.out.println(udd.checkCredentials(email, pwd));
-        ConnectionUtils.closeSessionFactory();
-
+        new DbConnection().closePool();
     }
 }
